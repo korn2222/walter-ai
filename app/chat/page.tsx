@@ -298,8 +298,8 @@ export default function ChatPage() {
                                         className={`
                                     max-w-[85%] p-4 md:p-5 text-sm leading-relaxed shadow-lg backdrop-blur-sm
                                     ${msg.role === 'user'
-                                                ? 'bg-accent-gradient text-white rounded-2xl rounded-tr-sm border border-transparent'
-                                                : 'bg-slate-800/60 text-gray-100 rounded-2xl rounded-tl-sm border border-white/10'}
+                                                ? 'bg-accent-gradient text-white rounded-3xl border border-transparent'
+                                                : 'bg-slate-800/60 text-gray-100 rounded-3xl border border-white/10'}
                                 `}
                                     >
                                         {msg.role === 'assistant' ? (
