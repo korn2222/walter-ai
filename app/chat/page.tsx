@@ -295,7 +295,7 @@ export default function ChatPage() {
                             >
                                 <div
                                     className={`
-                                max-w-[85%] md:max-w-[70%] p-5 md:p-6 text-lg leading-relaxed shadow-lg backdrop-blur-sm
+                                max-w-[85%] md:max-w-[70%] p-5 md:p-6 text-base leading-relaxed shadow-lg backdrop-blur-sm
                                 ${msg.role === 'user'
                                             ? 'bg-accent-gradient text-white rounded-2xl rounded-tr-sm border border-transparent'
                                             : 'bg-slate-800/60 text-gray-100 rounded-2xl rounded-tl-sm border border-white/10'}
@@ -305,9 +305,9 @@ export default function ChatPage() {
                                         <div className="text-gray-100">
                                             <ReactMarkdown
                                                 components={{
-                                                    h1: ({ node, ...props }) => <h1 className="text-xl font-bold text-white mt-4 mb-2" {...props} />,
-                                                    h2: ({ node, ...props }) => <h2 className="text-lg font-bold text-white mt-3 mb-2" {...props} />,
-                                                    h3: ({ node, ...props }) => <h3 className="text-base font-bold text-white mt-2 mb-1" {...props} />,
+                                                    h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-4 mb-2" {...props} />,
+                                                    h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-3 mb-2" {...props} />,
+                                                    h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-2 mb-1" {...props} />,
                                                     ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-2 ml-1" {...props} />,
                                                     ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-2 ml-1" {...props} />,
                                                     li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
