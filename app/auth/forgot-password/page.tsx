@@ -2,32 +2,27 @@
 
 import { useState } from 'react';
 import { supabase } from '@/app/lib/supabase';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
+    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleReset = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError(null);
+        setMessage(null);
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/auth/update-password`,
             });
 
             if (error) throw error;
-            router.push('/chat');
-            router.refresh();
+            setMessage({ type: 'success', text: 'Check your email for the password reset link.' });
         } catch (err: any) {
-            setError(err.message);
+            setMessage({ type: 'error', text: err.message });
         } finally {
             setLoading(false);
         }
@@ -42,17 +37,20 @@ export default function LoginPage() {
 
                 <div className="relative z-10">
                     <div className="text-center mb-10">
-                        <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">Walter AI</h1>
-                        <p className="text-app-text-muted text-lg">Your friendly AI companion</p>
+                        <h1 className="text-3xl font-bold text-white mb-3 tracking-tight">Reset Password</h1>
+                        <p className="text-app-text-muted text-base">Enter your email to receive a reset link</p>
                     </div>
 
-                    {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 text-red-200 p-4 rounded-2xl mb-6 text-sm backdrop-blur-sm">
-                            {error}
+                    {message && (
+                        <div className={`p-4 rounded-2xl mb-6 text-sm backdrop-blur-sm border ${message.type === 'success'
+                                ? 'bg-green-500/10 border-green-500/20 text-green-200'
+                                : 'bg-red-500/10 border-red-500/20 text-red-200'
+                            }`}>
+                            {message.text}
                         </div>
                     )}
 
-                    <form onSubmit={handleLogin} className="space-y-6">
+                    <form onSubmit={handleReset} className="space-y-6">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-app-text-secondary ml-1">Email Address</label>
                             <input
@@ -65,40 +63,19 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-app-text-secondary ml-1">Password</label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-slate-900/50 text-white text-lg px-5 py-4 rounded-xl border border-white/10 focus:border-app-accent focus:ring-1 focus:ring-app-accent transition-all placeholder:text-slate-600"
-                                placeholder="••••••••"
-                                required
-                            />
-                        </div>
-
-                        <div className="flex justify-end">
-                            <Link
-                                href="/auth/forgot-password"
-                                className="text-sm font-medium text-app-accent-glow hover:text-white transition-colors"
-                            >
-                                Forgot password?
-                            </Link>
-                        </div>
-
                         <button
                             type="submit"
                             disabled={loading}
                             className="w-full bg-accent-gradient hover:opacity-90 text-white text-lg font-semibold h-[60px] rounded-2xl transition-all shadow-glow hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none mt-4"
                         >
-                            {loading ? 'Signing in...' : 'Sign In'}
+                            {loading ? 'Sending Link...' : 'Send Reset Link'}
                         </button>
                     </form>
 
                     <p className="mt-8 text-center text-app-text-muted">
-                        Don't have an account?{' '}
-                        <Link href="/auth/signup" className="text-app-accent-glow hover:text-white font-medium transition-colors">
-                            create one now
+                        Remember your password?{' '}
+                        <Link href="/auth/login" className="text-app-accent-glow hover:text-white font-medium transition-colors">
+                            Sign In
                         </Link>
                     </p>
                 </div>
