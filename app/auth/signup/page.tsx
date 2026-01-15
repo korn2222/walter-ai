@@ -19,6 +19,15 @@ export default function SignupPage() {
         setError(null);
 
         try {
+            // Verify if email is already used (requires check_email_exists RPC function)
+            const { data: emailExists } = await supabase.rpc('check_email_exists', {
+                email_to_check: email
+            });
+
+            if (emailExists) {
+                throw new Error('This email is already registered. Please sign in instead.');
+            }
+
             const { error } = await supabase.auth.signUp({
                 email,
                 password,
@@ -34,6 +43,25 @@ export default function SignupPage() {
             router.push('/auth/login');
 
         } catch (err: any) {
+            // Fallback for missing RPC or other errors
+            if (err.message?.includes('check_email_exists') && err.message?.includes('not found')) {
+                // Squelch RPC missing error if function not applied yet, proceed to try signup anyway
+                console.warn("RPC check_email_exists missing, proceeding with standard signup");
+                try {
+                    const { error: signUpError } = await supabase.auth.signUp({
+                        email,
+                        password,
+                        options: { data: { name } }
+                    });
+                    if (signUpError) throw signUpError;
+                    alert('Signup successful! Please sign in.');
+                    router.push('/auth/login');
+                    return;
+                } catch (innerErr: any) {
+                    setError(innerErr.message);
+                    return;
+                }
+            }
             setError(err.message);
         } finally {
             setLoading(false);

@@ -59,3 +59,16 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- EMAIL CHECK RPC (For Signup Verification)
+-- WARNING: Allows email enumeration. Only use if required.
+CREATE OR REPLACE FUNCTION public.check_email_exists(email_to_check TEXT)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
+BEGIN
+  RETURN EXISTS (SELECT 1 FROM auth.users WHERE email = email_to_check);
+END;
+$$;
