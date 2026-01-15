@@ -65,7 +65,10 @@ export default function ChatPage() {
     }, [router]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // Small timeout to ensure DOM update
+        setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     }, [messages]);
 
     const fetchConversations = async (userId: string) => {
@@ -272,7 +275,7 @@ export default function ChatPage() {
                 </header>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 pb-32">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 pb-48">
                     {messages.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards]">
                             <div className="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-8 shadow-2xl border border-white/5">
