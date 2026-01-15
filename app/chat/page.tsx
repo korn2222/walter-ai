@@ -337,12 +337,12 @@ export default function ChatPage() {
                                 </div>
                             </div>
                         )}
-                        <div ref={messagesEndRef} className="h-32 w-full flex-shrink-0" />
+                        <div ref={messagesEndRef} className="h-24 w-full flex-shrink-0" />
                     </div>
                 </div>
 
                 {/* Input Area */}
-                <div className="absolute bottom-0 w-full z-20 p-4 md:p-6 bg-transparent">
+                <div className="absolute bottom-0 w-full z-20 p-4 bg-transparent">
                     <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center gap-3">
                         <input
                             value={input}
