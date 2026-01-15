@@ -275,7 +275,7 @@ export default function ChatPage() {
                 </header>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-40">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8">
                     <div className="max-w-2xl mx-auto space-y-6">
                         {messages.length === 0 ? (
                             <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
@@ -337,7 +337,7 @@ export default function ChatPage() {
                                 </div>
                             </div>
                         )}
-                        <div ref={messagesEndRef} />
+                        <div ref={messagesEndRef} className="h-64 w-full flex-shrink-0" />
                     </div>
                 </div>
 
