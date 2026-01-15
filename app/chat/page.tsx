@@ -306,8 +306,8 @@ export default function ChatPage() {
                                             <div className="text-gray-100">
                                                 <ReactMarkdown
                                                     components={{
-                                                        h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-4 mb-2" {...props} />,
-                                                        h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-3 mb-2" {...props} />,
+                                                        h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-0 mb-2" {...props} />,
+                                                        h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-2 mb-2" {...props} />,
                                                         h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-2 mb-1" {...props} />,
                                                         ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-2 ml-1" {...props} />,
                                                         ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-2 ml-1" {...props} />,
