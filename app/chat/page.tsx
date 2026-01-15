@@ -296,26 +296,26 @@ export default function ChatPage() {
                                 >
                                     <div
                                         className={`
-                                    max-w-[85%] p-4 md:p-5 text-sm leading-relaxed shadow-lg backdrop-blur-sm
+                                    max-w-full text-sm leading-relaxed
                                     ${msg.role === 'user'
-                                                ? 'bg-accent-gradient text-white rounded-3xl border border-transparent'
-                                                : 'bg-slate-800/60 text-gray-100 rounded-3xl border border-white/10'}
+                                                ? 'bg-accent-gradient text-white rounded-3xl px-5 py-3 shadow-lg ml-auto max-w-[85%]'
+                                                : 'text-gray-100 pl-0'}
                                 `}
                                     >
                                         {msg.role === 'assistant' ? (
                                             <div className="text-gray-100 [&>*:first-child]:mt-0">
                                                 <ReactMarkdown
                                                     components={{
-                                                        h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-0 mb-2" {...props} />,
-                                                        h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-2 mb-2" {...props} />,
-                                                        h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-2 mb-1" {...props} />,
-                                                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-2 ml-1" {...props} />,
-                                                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-2 ml-1" {...props} />,
+                                                        h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-6 mb-3" {...props} />,
+                                                        h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-5 mb-2" {...props} />,
+                                                        h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-4 mb-1" {...props} />,
+                                                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 ml-1" {...props} />,
+                                                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 ml-1" {...props} />,
                                                         li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
-                                                        p: ({ node, ...props }) => <p className="mb-2 last:mb-0 leading-relaxed" {...props} />,
+                                                        p: ({ node, ...props }) => <p className="mb-4 last:mb-0 leading-relaxed text-gray-300" {...props} />,
                                                         strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
-                                                        blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-app-accent pl-4 py-1 my-2 bg-white/5 rounded-r" {...props} />,
-                                                        code: ({ node, ...props }) => <code className="bg-black/30 px-1 py-0.5 rounded text-xs font-mono text-app-accent-glow" {...props} />,
+                                                        blockquote: ({ node, ...props }) => <blockquote className="border-l-2 border-app-accent pl-4 py-1 my-4 text-gray-400 italic" {...props} />,
+                                                        code: ({ node, ...props }) => <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-app-accent-glow" {...props} />,
                                                     }}
                                                 >
                                                     {msg.content}
