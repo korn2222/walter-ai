@@ -303,7 +303,7 @@ export default function ChatPage() {
                                 `}
                                     >
                                         {msg.role === 'assistant' ? (
-                                            <div className="text-gray-100">
+                                            <div className="text-gray-100 [&>*:first-child]:mt-0">
                                                 <ReactMarkdown
                                                     components={{
                                                         h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-0 mb-2" {...props} />,
