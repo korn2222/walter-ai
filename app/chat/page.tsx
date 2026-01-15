@@ -276,78 +276,80 @@ export default function ChatPage() {
 
                 {/* Messages */}
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 pb-4">
-                    {messages.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards]">
-                            <div className="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-8 shadow-2xl border border-white/5">
-                                <MessageSquare size={48} />
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-4">
+                    <div className="max-w-3xl mx-auto space-y-6">
+                        {messages.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
+                                <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
+                                    <MessageSquare size={40} />
+                                </div>
+                                <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Hello, I'm Walter!</h2>
+                                <p className="text-base text-app-text-secondary max-w-md leading-relaxed">
+                                    I'm here to match your pace. Ask me anything, and I'll do my best to help.
+                                </p>
                             </div>
-                            <h2 className="text-3xl font-bold text-white mb-3 tracking-tight">Hello, I'm Walter!</h2>
-                            <p className="text-xl text-app-text-secondary max-w-lg leading-relaxed">
-                                I'm here to be your friendly companion. Ask me anything, tell me a story, or just say hello.
-                            </p>
-                        </div>
-                    ) : (
-                        messages.map((msg, idx) => (
-                            <div
-                                key={idx}
-                                className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
-                            >
+                        ) : (
+                            messages.map((msg, idx) => (
                                 <div
-                                    className={`
-                                max-w-[85%] md:max-w-[70%] p-5 md:p-6 text-base leading-relaxed shadow-lg backdrop-blur-sm
-                                ${msg.role === 'user'
-                                            ? 'bg-accent-gradient text-white rounded-2xl rounded-tr-sm border border-transparent'
-                                            : 'bg-slate-800/60 text-gray-100 rounded-2xl rounded-tl-sm border border-white/10'}
-                            `}
+                                    key={idx}
+                                    className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
                                 >
-                                    {msg.role === 'assistant' ? (
-                                        <div className="text-gray-100">
-                                            <ReactMarkdown
-                                                components={{
-                                                    h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-4 mb-2" {...props} />,
-                                                    h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-3 mb-2" {...props} />,
-                                                    h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-2 mb-1" {...props} />,
-                                                    ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-2 ml-1" {...props} />,
-                                                    ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-2 ml-1" {...props} />,
-                                                    li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
-                                                    p: ({ node, ...props }) => <p className="mb-2 last:mb-0 leading-relaxed" {...props} />,
-                                                    strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
-                                                    blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-app-accent pl-4 py-1 my-2 bg-white/5 rounded-r" {...props} />,
-                                                    code: ({ node, ...props }) => <code className="bg-black/30 px-1 py-0.5 rounded text-sm font-mono text-app-accent-glow" {...props} />,
-                                                }}
-                                            >
-                                                {msg.content}
-                                            </ReactMarkdown>
-                                        </div>
-                                    ) : (
-                                        msg.content
-                                    )}
+                                    <div
+                                        className={`
+                                    max-w-[85%] p-4 md:p-5 text-sm leading-relaxed shadow-lg backdrop-blur-sm
+                                    ${msg.role === 'user'
+                                                ? 'bg-accent-gradient text-white rounded-2xl rounded-tr-sm border border-transparent'
+                                                : 'bg-slate-800/60 text-gray-100 rounded-2xl rounded-tl-sm border border-white/10'}
+                                `}
+                                    >
+                                        {msg.role === 'assistant' ? (
+                                            <div className="text-gray-100">
+                                                <ReactMarkdown
+                                                    components={{
+                                                        h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-4 mb-2" {...props} />,
+                                                        h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-3 mb-2" {...props} />,
+                                                        h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-2 mb-1" {...props} />,
+                                                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-2 ml-1" {...props} />,
+                                                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-2 ml-1" {...props} />,
+                                                        li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
+                                                        p: ({ node, ...props }) => <p className="mb-2 last:mb-0 leading-relaxed" {...props} />,
+                                                        strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
+                                                        blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-app-accent pl-4 py-1 my-2 bg-white/5 rounded-r" {...props} />,
+                                                        code: ({ node, ...props }) => <code className="bg-black/30 px-1 py-0.5 rounded text-xs font-mono text-app-accent-glow" {...props} />,
+                                                    }}
+                                                >
+                                                    {msg.content}
+                                                </ReactMarkdown>
+                                            </div>
+                                        ) : (
+                                            msg.content
+                                        )}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                        {loading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
+                            <div className="flex justify-start w-full animate-fade-in">
+                                <div className="bg-slate-800/60 text-slate-300 px-5 py-3 rounded-2xl rounded-tl-sm border border-white/10 flex items-center gap-2 backdrop-blur-sm">
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    <span className="ml-3 text-sm font-medium text-blue-200">Thinking...</span>
                                 </div>
                             </div>
-                        ))
-                    )}
-                    {loading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
-                        <div className="flex justify-start w-full animate-fade-in">
-                            <div className="bg-slate-800/60 text-slate-300 px-6 py-4 rounded-2xl rounded-tl-sm border border-white/10 flex items-center gap-2 backdrop-blur-sm">
-                                <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                <div className="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                                <span className="ml-3 text-lg font-medium text-blue-200">Thinking...</span>
-                            </div>
-                        </div>
-                    )}
-                    <div ref={messagesEndRef} />
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
                 </div>
 
                 {/* Input Area */}
                 <div className="border-t border-white/5 bg-slate-900/80 backdrop-blur-xl p-4 md:p-6 w-full z-20">
-                    <form onSubmit={sendMessage} className="max-w-4xl mx-auto relative flex items-center gap-3">
+                    <form onSubmit={sendMessage} className="max-w-3xl mx-auto relative flex items-center gap-3">
                         <input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type a message to Walter..."
-                            className="flex-1 bg-slate-800/50 text-white text-lg px-6 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-inner"
+                            className="flex-1 bg-slate-800/50 text-white text-base px-6 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-inner"
                             disabled={loading}
                         />
                         <button
@@ -355,7 +357,7 @@ export default function ChatPage() {
                             disabled={!input.trim() || loading}
                             className="bg-accent-gradient hover:opacity-90 text-white p-4 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-glow hover:scale-105 active:scale-95"
                         >
-                            <Send size={24} />
+                            <Send size={20} />
                         </button>
                     </form>
                 </div>
