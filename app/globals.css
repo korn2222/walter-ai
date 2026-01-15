@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@source "../app/**/*.{js,ts,jsx,tsx}";
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-app-bg: #0b1120;
+  --color-app-sidebar: #111827;
+  --color-app-card: #172033;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-app-text-primary: #f3f4f6;
+  --color-app-text-secondary: #9ca3af;
+  --color-app-text-muted: #6b7280;
+
+  --color-app-accent: #3b82f6;
+  --color-app-accent-hover: #2563eb;
+  --color-app-accent-glow: #3b82f6;
+
+  --color-app-border: #1f2937;
+
+  --animate-fade-in: fadeIn 0.4s ease-out forwards;
+
+  --font-sans: 'Inter', sans-serif;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
+/* Utilities for compatibility if needed, using CSS variables defined above */
+@utility glass-panel {
+  @apply bg-slate-800/40 backdrop-blur-xl border border-white/10;
+}
+
+/* Base styles */
+:root {
+  --bg-app: 11 17 32;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-app-bg);
+  color: var(--color-app-text-primary);
+  font-family: var(--font-sans);
+  @apply antialiased;
+}
+
+@layer utilities {
+  .bg-app-gradient {
+    background-image: linear-gradient(to bottom right, var(--color-app-bg), #0f172a);
+  }
+
+  .bg-accent-gradient {
+    background-image: linear-gradient(135deg, var(--color-app-accent), var(--color-app-accent-hover));
+  }
+}
+
+/* Reset */
+input,
+textarea,
+button {
+  @apply outline-none ring-0;
 }
