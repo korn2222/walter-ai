@@ -275,9 +275,8 @@ export default function ChatPage() {
                 </header>
 
                 {/* Messages */}
-                {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-4">
-                    <div className="max-w-3xl mx-auto space-y-6">
+                    <div className="max-w-2xl mx-auto space-y-6">
                         {messages.length === 0 ? (
                             <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
                                 <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
@@ -296,7 +295,7 @@ export default function ChatPage() {
                                 >
                                     <div
                                         className={`
-                                    max-w-full text-sm leading-relaxed
+                                    max-w-full text-base leading-relaxed
                                     ${msg.role === 'user'
                                                 ? 'bg-accent-gradient text-white rounded-3xl px-5 py-3 shadow-lg ml-auto max-w-[85%]'
                                                 : 'text-gray-100 pl-0'}
@@ -306,9 +305,9 @@ export default function ChatPage() {
                                             <div className="text-gray-100 [&>*:first-child]:mt-0">
                                                 <ReactMarkdown
                                                     components={{
-                                                        h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-6 mb-3" {...props} />,
-                                                        h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-5 mb-2" {...props} />,
-                                                        h3: ({ node, ...props }) => <h3 className="text-sm font-bold text-white mt-4 mb-1" {...props} />,
+                                                        h1: ({ node, ...props }) => <h1 className="text-xl font-bold text-white mt-6 mb-3" {...props} />,
+                                                        h2: ({ node, ...props }) => <h2 className="text-lg font-bold text-white mt-5 mb-2" {...props} />,
+                                                        h3: ({ node, ...props }) => <h3 className="text-base font-bold text-white mt-4 mb-1" {...props} />,
                                                         ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 ml-1" {...props} />,
                                                         ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 ml-1" {...props} />,
                                                         li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
@@ -344,7 +343,7 @@ export default function ChatPage() {
 
                 {/* Input Area */}
                 <div className="border-t border-white/5 bg-slate-900/80 backdrop-blur-xl p-4 md:p-6 w-full z-20">
-                    <form onSubmit={sendMessage} className="max-w-3xl mx-auto relative flex items-center gap-3">
+                    <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center gap-3">
                         <input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
