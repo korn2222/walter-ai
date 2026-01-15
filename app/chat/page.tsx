@@ -337,7 +337,7 @@ export default function ChatPage() {
                                 </div>
                             </div>
                         )}
-                        <div ref={messagesEndRef} className="h-20 w-full flex-shrink-0" />
+                        <div ref={messagesEndRef} className="h-10 w-full flex-shrink-0" />
                     </div>
                 </div>
 
