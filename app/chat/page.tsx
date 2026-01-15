@@ -342,13 +342,13 @@ export default function ChatPage() {
                 </div>
 
                 {/* Input Area */}
-                <div className="border-t border-white/5 bg-slate-900/80 backdrop-blur-xl p-4 md:p-6 w-full z-20">
+                <div className="w-full z-20 p-4 md:p-6 bg-transparent">
                     <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center gap-3">
                         <input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type a message to Walter..."
-                            className="flex-1 bg-slate-800/50 text-white text-base px-6 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-inner"
+                            className="flex-1 bg-slate-800 text-white text-base px-6 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-2xl"
                             disabled={loading}
                         />
                         <button
