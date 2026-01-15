@@ -275,7 +275,7 @@ export default function ChatPage() {
                 </header>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-4">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-40">
                     <div className="max-w-2xl mx-auto space-y-6">
                         {messages.length === 0 ? (
                             <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
@@ -342,7 +342,7 @@ export default function ChatPage() {
                 </div>
 
                 {/* Input Area */}
-                <div className="w-full z-20 p-4 md:p-6 bg-transparent">
+                <div className="absolute bottom-0 w-full z-20 p-4 md:p-6 bg-transparent">
                     <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center gap-3">
                         <input
                             value={input}
