@@ -343,20 +343,20 @@ export default function ChatPage() {
 
                 {/* Input Area */}
                 <div className="absolute bottom-4 w-full z-20 p-2 bg-transparent">
-                    <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center gap-3">
+                    <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center">
                         <input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type a message to Walter..."
-                            className="flex-1 bg-slate-800 text-white text-base px-6 py-3 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-2xl"
+                            className="w-full bg-slate-800 text-white text-base pl-6 pr-14 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-2xl"
                             disabled={loading}
                         />
                         <button
                             type="submit"
                             disabled={!input.trim() || loading}
-                            className="bg-accent-gradient hover:opacity-90 text-white p-4 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-glow hover:scale-105 active:scale-95"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-accent-gradient hover:opacity-90 text-white p-2 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
                         >
-                            <Send size={20} />
+                            <Send size={18} />
                         </button>
                     </form>
                 </div>
