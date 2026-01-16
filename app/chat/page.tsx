@@ -190,13 +190,13 @@ export default function ChatPage() {
             {/* Sidebar - Glass Effect */}
             <aside
                 className={`
-            fixed md:relative z-50 h-full w-[280px] bg-slate-900/80 backdrop-blur-xl border-r border-white/5 flex flex-col transition-transform duration-300 ease-in-out
-            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-[280px]'}
+            fixed md:relative z-50 h-full w-[85vw] md:w-[280px] bg-slate-900/80 backdrop-blur-xl border-r border-white/5 flex flex-col transition-transform duration-300 ease-in-out
+            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
             ${!sidebarOpen && !isMobile ? 'hidden' : 'flex'}
         `}
             >
-                <div className="p-5 border-b border-white/5 flex items-center justify-between">
-                    <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                <div className="p-4 md:p-5 border-b border-white/5 flex items-center justify-between">
+                    <h1 className="text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2">
                         <span className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center text-sm shadow-glow">W</span>
                         Walter AI
                     </h1>
@@ -207,10 +207,10 @@ export default function ChatPage() {
                     )}
                 </div>
 
-                <div className="p-4">
+                <div className="p-3 md:p-4">
                     <button
                         onClick={startNewChat}
-                        className="w-full bg-accent-gradient hover:opacity-90 text-white rounded-xl py-3 px-4 flex items-center justify-center gap-2 transition-all font-medium text-lg shadow-lg hover:shadow-glow hover:scale-[1.02] active:scale-[0.98]"
+                        className="w-full bg-accent-gradient hover:opacity-90 text-white rounded-xl py-2.5 md:py-3 px-4 flex items-center justify-center gap-2 transition-all font-medium text-base md:text-lg shadow-lg hover:shadow-glow hover:scale-[1.02] active:scale-[0.98]"
                     >
                         <Plus size={20} />
                         New Chat
@@ -267,7 +267,7 @@ export default function ChatPage() {
             {/* Main Chat Area */}
             <main className="flex-1 flex flex-col h-full relative w-full bg-app-bg/50">
                 {/* Header (Mobile Only) */}
-                <header className="h-[60px] border-b border-white/5 flex items-center px-4 bg-slate-900/80 backdrop-blur-md z-10 sticky top-0 md:hidden">
+                <header className="h-[50px] md:h-[60px] border-b border-white/5 flex items-center px-4 bg-slate-900/80 backdrop-blur-md z-10 sticky top-0 md:hidden">
                     <button onClick={() => setSidebarOpen(true)} className="text-app-text-secondary hover:text-white mr-4">
                         <Menu size={24} />
                     </button>
@@ -295,9 +295,9 @@ export default function ChatPage() {
                                 >
                                     <div
                                         className={`
-                                    max-w-full text-base leading-relaxed
+                                    max-w-full text-[15px] md:text-base leading-relaxed
                                     ${msg.role === 'user'
-                                                ? 'bg-blue-600 text-white rounded-3xl px-5 py-3 shadow-lg ml-auto max-w-[85%]'
+                                                ? 'bg-blue-600 text-white rounded-3xl px-4 py-2.5 md:px-5 md:py-3 shadow-lg ml-auto max-w-[85%]'
                                                 : 'text-gray-100 pl-0'}
                                 `}
                                     >
