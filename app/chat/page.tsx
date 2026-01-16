@@ -297,7 +297,7 @@ export default function ChatPage() {
                                         className={`
                                     max-w-full text-base leading-relaxed
                                     ${msg.role === 'user'
-                                                ? 'bg-accent-gradient text-white rounded-3xl px-5 py-3 shadow-lg ml-auto max-w-[85%]'
+                                                ? 'bg-blue-600 text-white rounded-3xl px-5 py-3 shadow-lg ml-auto max-w-[85%]'
                                                 : 'text-gray-100 pl-0'}
                                 `}
                                     >
@@ -354,7 +354,7 @@ export default function ChatPage() {
                         <button
                             type="submit"
                             disabled={!input.trim() || loading}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent-gradient hover:opacity-90 text-white p-3 rounded-full transition-all disabled:brightness-75 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:opacity-90 text-white p-3 rounded-full transition-all disabled:brightness-75 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
                         >
                             <Send size={20} />
                         </button>
