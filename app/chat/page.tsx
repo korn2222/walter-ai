@@ -354,7 +354,7 @@ export default function ChatPage() {
                         <button
                             type="submit"
                             disabled={!input.trim() || loading}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent-gradient hover:opacity-90 text-white p-3 rounded-full transition-all disabled:brightness-75 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-700 hover:bg-slate-600 text-white p-2 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
                         >
                             <Send size={20} />
                         </button>
