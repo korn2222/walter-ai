@@ -343,7 +343,7 @@ export default function ChatPage() {
 
                 {/* Input Area */}
                 <div className="absolute bottom-4 w-full z-20 p-2 bg-transparent">
-                    <form onSubmit={sendMessage} className="max-w-2xl mx-auto relative flex items-center">
+                    <form onSubmit={sendMessage} className="w-[85%] md:w-full max-w-2xl mx-auto relative flex items-center">
                         <input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
