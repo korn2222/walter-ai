@@ -181,7 +181,7 @@ export default function ChatPage() {
     };
 
     return (
-        <div className="flex h-screen overflow-hidden bg-app-gradient text-app-text-primary antialiased">
+        <div className="flex h-[100dvh] w-full fixed inset-0 overflow-hidden bg-app-gradient text-app-text-primary antialiased">
             {/* Mobile Overlay */}
             {isMobile && sidebarOpen && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" onClick={() => setSidebarOpen(false)} />
