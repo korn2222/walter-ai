@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase';
 import {
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import ProfileSidebar from './ProfileSidebar';
+import ChatSuccessHandler from './ChatSuccessHandler';
 
 interface Tuple {
     role: 'user' | 'assistant';
@@ -205,6 +206,15 @@ export default function ChatPage() {
             {isMobile && sidebarOpen && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" onClick={() => setSidebarOpen(false)} />
             )}
+
+            {isMobile && sidebarOpen && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" onClick={() => setSidebarOpen(false)} />
+            )}
+
+            {/* Success Overlay wrapped in Suspense for build safety */}
+            <Suspense fallback={null}>
+                <ChatSuccessHandler onSubscriptionUpdate={setSubscriptionStatus} />
+            </Suspense>
 
             {/* Left Sidebar - History */}
             <aside
