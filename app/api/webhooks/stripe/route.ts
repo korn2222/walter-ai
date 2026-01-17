@@ -42,8 +42,8 @@ export async function POST(req: Request) {
                 // Cast to Stripe.Subscription to avoid "Response<Subscription>" TS issues
                 const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as unknown as Stripe.Subscription;
 
-                // Get userId from metadata (we added this in checkout route)
-                const userId = session.metadata?.userId;
+                // Get userId from metadata OR client_reference_id (for Payment Links)
+                const userId = session.metadata?.userId || session.client_reference_id;
 
                 if (userId) {
                     await supabase.from('profiles').update({
