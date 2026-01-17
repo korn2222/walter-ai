@@ -10,6 +10,11 @@ export default function SettingsPage() {
     const router = useRouter();
     const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
     const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
     useEffect(() => {
         const fetchProfile = async () => {

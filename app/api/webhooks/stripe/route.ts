@@ -39,7 +39,8 @@ export async function POST(req: Request) {
             case 'checkout.session.completed': {
                 const session = event.data.object as Stripe.Checkout.Session;
                 // Retrieve the subscription details
-                const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+                // Cast to Stripe.Subscription to avoid "Response<Subscription>" TS issues
+                const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as unknown as Stripe.Subscription;
 
                 // Get userId from metadata (we added this in checkout route)
                 const userId = session.metadata?.userId;
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
                         stripe_customer_id: session.customer as string,
                         subscription_id: session.subscription as string,
                         subscription_status: 'active', // or 'trialing'
-                        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+                        current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
                     }).eq('id', userId);
                     console.log(`Updated subscription for user ${userId}`);
                 }
@@ -66,7 +67,7 @@ export async function POST(req: Request) {
                 if (profiles && profiles.length > 0) {
                     await supabase.from('profiles').update({
                         subscription_status: subscription.status, // active, past_due, canceled, trialing
-                        current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+                        current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
                     }).eq('stripe_customer_id', subscription.customer as string);
                     console.log(`Updated subscription status: ${subscription.status}`);
                 }
