@@ -36,6 +36,24 @@ export async function POST(req: Request) {
 
         console.log('User authenticated:', user.id);
 
+        // CHECK SUBSCRIPTION
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('subscription_status, current_period_end')
+            .eq('id', user.id)
+            .single();
+
+        const isSubscribed =
+            profile?.subscription_status === 'active' ||
+            profile?.subscription_status === 'trialing' ||
+            (profile?.current_period_end && new Date(profile.current_period_end) > new Date());
+
+        if (!isSubscribed) {
+            console.log('User not subscribed or subscription expired');
+            // Allow them to send a message if they are new? No, strictly gate it as requested.
+            return NextResponse.json({ error: 'Subscription required' }, { status: 403 });
+        }
+
         const body = await req.json();
         const { message, conversationId } = body;
 
