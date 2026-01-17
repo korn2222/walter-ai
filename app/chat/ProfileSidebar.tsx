@@ -42,10 +42,8 @@ export default function ProfileSidebar({ user, isOpen, onClose }: ProfileSidebar
         fetchProfile();
     }, [user]);
 
-    const handlePaymentLink = (type: 'trial' | 'immediate') => {
-        const link = type === 'trial'
-            ? process.env.NEXT_PUBLIC_STRIPE_LINK_TRIAL
-            : process.env.NEXT_PUBLIC_STRIPE_LINK_IMMEDIATE;
+    const handleSubscribe = () => {
+        const link = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
         if (!link) {
             setMessage({ type: 'error', text: 'Payment link not configured properly.' });
@@ -170,18 +168,11 @@ export default function ProfileSidebar({ user, isOpen, onClose }: ProfileSidebar
                             <div className="bg-blue-600/10 border border-blue-500/20 p-4 rounded-xl">
                                 <p className="text-sm text-blue-200 mb-3">Upgrade to unlock full chat access and premium features.</p>
                                 <button
-                                    onClick={() => handlePaymentLink('trial')}
+                                    onClick={handleSubscribe}
                                     disabled={isLoadingSubscription}
                                     className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 mb-2"
                                 >
-                                    {isLoadingSubscription ? 'Loading...' : 'Start Free Trial'}
-                                </button>
-                                <button
-                                    onClick={() => handlePaymentLink('immediate')}
-                                    disabled={isLoadingSubscription}
-                                    className="w-full bg-transparent hover:bg-white/5 text-xs text-gray-400 font-medium py-2 rounded-lg transition-colors"
-                                >
-                                    Or subscribe immediately ($15/mo)
+                                    {isLoadingSubscription ? 'Loading...' : 'Subscribe Now ($15/mo)'}
                                 </button>
                             </div>
                         </div>
