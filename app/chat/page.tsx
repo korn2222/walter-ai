@@ -287,20 +287,20 @@ export default function ChatPage() {
                     </button>
                 </header>
 
-                <div className="flex-1 overflow-y-auto flex flex-col relative w-full h-full scroll-smooth">
-                    {messages.length === 0 ? (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 opacity-0 animate-[fadeIn_0.5s_ease-out_forwards]">
-                            <div className="w-20 h-20 md:w-24 md:h-24 bg-slate-800/80 backdrop-blur-sm rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/10 ring-1 ring-white/5">
-                                <MessageSquare size={40} className="md:w-12 md:h-12" />
+                <div className="flex-1 overflow-y-auto p-4 md:p-8">
+                    <div className="max-w-3xl mx-auto space-y-6">
+                        {messages.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
+                                <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
+                                    <MessageSquare size={40} />
+                                </div>
+                                <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Hello, I'm Walter!</h2>
+                                <p className="text-base text-app-text-secondary max-w-md leading-relaxed">
+                                    I'm here to match your pace. Ask me anything, and I'll do my best to help.
+                                </p>
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">Hello, I'm Walter!</h2>
-                            <p className="text-base md:text-lg text-app-text-secondary max-w-md md:max-w-lg leading-relaxed px-4">
-                                I'm here to match your pace. Ask me anything, and I'll do my best to help.
-                            </p>
-                        </div>
-                    ) : (
-                        <div className="max-w-3xl mx-auto space-y-6 w-full p-4 md:p-8">
-                            {messages.map((msg, idx) => (
+                        ) : (
+                            messages.map((msg, idx) => (
                                 <div
                                     key={idx}
                                     className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
@@ -337,20 +337,20 @@ export default function ChatPage() {
                                         )}
                                     </div>
                                 </div>
-                            ))}
-                            {loading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
-                                <div className="flex justify-start w-full animate-fade-in">
-                                    <div className="bg-slate-800/60 text-slate-300 px-5 py-3 rounded-2xl rounded-tl-sm border border-white/10 flex items-center gap-2 backdrop-blur-sm">
-                                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                                        <span className="ml-3 text-sm font-medium text-blue-200">Thinking...</span>
-                                    </div>
+                            ))
+                        )}
+                        {loading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
+                            <div className="flex justify-start w-full animate-fade-in">
+                                <div className="bg-slate-800/60 text-slate-300 px-5 py-3 rounded-2xl rounded-tl-sm border border-white/10 flex items-center gap-2 backdrop-blur-sm">
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                    <span className="ml-3 text-sm font-medium text-blue-200">Thinking...</span>
                                 </div>
-                            )}
-                            <div ref={messagesEndRef} className="h-16 w-full flex-shrink-0" />
-                        </div>
-                    )}
+                            </div>
+                        )}
+                        <div ref={messagesEndRef} className="h-16 w-full flex-shrink-0" />
+                    </div>
                 </div>
 
                 <div className="absolute bottom-4 w-full z-20 p-2 bg-transparent">
