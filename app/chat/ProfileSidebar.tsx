@@ -188,7 +188,7 @@ export default function ProfileSidebar({ user, isOpen, onClose }: ProfileSidebar
                                     disabled={isLoadingSubscription}
                                     className="w-full bg-transparent hover:bg-white/5 text-xs text-gray-400 font-medium py-2 rounded-lg transition-colors"
                                 >
-                                    Or subscribe immediately ($10/mo)
+                                    Or subscribe immediately ($15/mo)
                                 </button>
                             </div>
                         </div>

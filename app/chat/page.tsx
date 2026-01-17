@@ -286,73 +286,86 @@ export default function ChatPage() {
                         <User size={24} />
                     </button>
                 </header>
-
-                <div className="flex-1 overflow-y-auto p-4 md:p-8">
-                    <div className="max-w-3xl mx-auto space-y-6">
-                        {messages.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
-                                <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
-                                    <MessageSquare size={40} />
+                {/* Messages - Only show if subscribed */}
+                {(subscriptionStatus === 'active' || subscriptionStatus === 'trialing') ? (
+                    <div className="flex-1 overflow-y-auto p-4 md:p-8">
+                        <div className="max-w-3xl mx-auto space-y-6">
+                            {messages.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
+                                    <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
+                                        <MessageSquare size={40} />
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Hello, I'm Walter!</h2>
+                                    <p className="text-base text-app-text-secondary max-w-md leading-relaxed">
+                                        I'm here to match your pace. Ask me anything, and I'll do my best to help.
+                                    </p>
                                 </div>
-                                <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Hello, I'm Walter!</h2>
-                                <p className="text-base text-app-text-secondary max-w-md leading-relaxed">
-                                    I'm here to match your pace. Ask me anything, and I'll do my best to help.
-                                </p>
-                            </div>
-                        ) : (
-                            messages.map((msg, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
-                                >
+                            ) : (
+                                messages.map((msg, idx) => (
                                     <div
-                                        className={`
-                                    max-w-full text-[15px] md:text-base leading-relaxed
-                                    ${msg.role === 'user'
-                                                ? 'bg-blue-600 text-white rounded-3xl px-4 py-2.5 md:px-5 md:py-3 shadow-lg ml-auto max-w-[85%]'
-                                                : 'text-gray-100 pl-0'}
-                                `}
+                                        key={idx}
+                                        className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
                                     >
-                                        {msg.role === 'assistant' ? (
-                                            <div className="text-gray-100 [&>*:first-child]:mt-0">
-                                                <ReactMarkdown
-                                                    components={{
-                                                        h1: ({ node, ...props }) => <h1 className="text-xl font-bold text-white mt-6 mb-3" {...props} />,
-                                                        h2: ({ node, ...props }) => <h2 className="text-lg font-bold text-white mt-5 mb-2" {...props} />,
-                                                        h3: ({ node, ...props }) => <h3 className="text-base font-bold text-white mt-4 mb-1" {...props} />,
-                                                        ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 ml-1" {...props} />,
-                                                        ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 ml-1" {...props} />,
-                                                        li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
-                                                        p: ({ node, ...props }) => <p className="mb-4 last:mb-0 leading-relaxed text-gray-300" {...props} />,
-                                                        strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
-                                                        blockquote: ({ node, ...props }) => <blockquote className="border-l-2 border-app-accent pl-4 py-1 my-4 text-gray-400 italic" {...props} />,
-                                                        code: ({ node, ...props }) => <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-app-accent-glow" {...props} />,
-                                                    }}
-                                                >
-                                                    {msg.content}
-                                                </ReactMarkdown>
-                                            </div>
-                                        ) : (
-                                            msg.content
-                                        )}
+                                        <div
+                                            className={`
+                                        max-w-full text-[15px] md:text-base leading-relaxed
+                                        ${msg.role === 'user'
+                                                    ? 'bg-blue-600 text-white rounded-3xl px-4 py-2.5 md:px-5 md:py-3 shadow-lg ml-auto max-w-[85%]'
+                                                    : 'text-gray-100 pl-0'}
+                                    `}
+                                        >
+                                            {msg.role === 'assistant' ? (
+                                                <div className="text-gray-100 [&>*:first-child]:mt-0">
+                                                    <ReactMarkdown
+                                                        components={{
+                                                            h1: ({ node, ...props }) => <h1 className="text-xl font-bold text-white mt-6 mb-3" {...props} />,
+                                                            h2: ({ node, ...props }) => <h2 className="text-lg font-bold text-white mt-5 mb-2" {...props} />,
+                                                            h3: ({ node, ...props }) => <h3 className="text-base font-bold text-white mt-4 mb-1" {...props} />,
+                                                            ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1 mb-4 ml-1" {...props} />,
+                                                            ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1 mb-4 ml-1" {...props} />,
+                                                            li: ({ node, ...props }) => <li className="text-gray-200" {...props} />,
+                                                            p: ({ node, ...props }) => <p className="mb-4 last:mb-0 leading-relaxed text-gray-300" {...props} />,
+                                                            strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
+                                                            blockquote: ({ node, ...props }) => <blockquote className="border-l-2 border-app-accent pl-4 py-1 my-4 text-gray-400 italic" {...props} />,
+                                                            code: ({ node, ...props }) => <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-app-accent-glow" {...props} />,
+                                                        }}
+                                                    >
+                                                        {msg.content}
+                                                    </ReactMarkdown>
+                                                </div>
+                                            ) : (
+                                                msg.content
+                                            )}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                            {loading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
+                                <div className="flex justify-start w-full animate-fade-in">
+                                    <div className="bg-slate-800/60 text-slate-300 px-5 py-3 rounded-2xl rounded-tl-sm border border-white/10 flex items-center gap-2 backdrop-blur-sm">
+                                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                        <span className="ml-3 text-sm font-medium text-blue-200">Thinking...</span>
                                     </div>
                                 </div>
-                            ))
-                        )}
-                        {loading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
-                            <div className="flex justify-start w-full animate-fade-in">
-                                <div className="bg-slate-800/60 text-slate-300 px-5 py-3 rounded-2xl rounded-tl-sm border border-white/10 flex items-center gap-2 backdrop-blur-sm">
-                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                                    <span className="ml-3 text-sm font-medium text-blue-200">Thinking...</span>
-                                </div>
-                            </div>
-                        )}
-                        <div ref={messagesEndRef} className="h-16 w-full flex-shrink-0" />
+                            )}
+                            <div ref={messagesEndRef} className="h-16 w-full flex-shrink-0" />
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="flex-1 flex flex-col items-center justify-center p-8 opacity-70">
+                        <div className="w-24 h-24 bg-slate-800/30 rounded-full flex items-center justify-center text-slate-600 mb-6 border border-white/5">
+                            <MessageSquare size={48} />
+                        </div>
+                        <h2 className="text-3xl font-bold text-slate-500 mb-2">Chat Locked</h2>
+                        <p className="text-slate-400 max-w-md text-center">
+                            Please subscribe in the panel to the right to unlock Walter AI.
+                        </p>
+                    </div>
+                )}
 
+                {/* Input Area */}
                 <div className="absolute bottom-4 w-full z-20 p-2 bg-transparent">
                     <form onSubmit={sendMessage} className="w-[95%] md:w-full max-w-2xl mx-auto relative flex items-center">
                         <input
