@@ -73,8 +73,8 @@ export async function POST(req: Request) {
                     userId: user.id,
                 }
             },
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings?success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings?canceled=true`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/chat?success=true`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/chat?canceled=true`,
             metadata: {
                 userId: user.id,
             },
