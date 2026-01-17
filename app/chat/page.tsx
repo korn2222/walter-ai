@@ -287,19 +287,19 @@ export default function ChatPage() {
                     </button>
                 </header>
 
-                <div className="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col">
+                <div className="flex-1 overflow-y-auto flex flex-col relative w-full h-full scroll-smooth">
                     {messages.length === 0 ? (
-                        <div className="flex-1 flex flex-col items-center justify-center text-center opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] pb-20">
-                            <div className="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
-                                <MessageSquare size={48} />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 opacity-0 animate-[fadeIn_0.5s_ease-out_forwards]">
+                            <div className="w-20 h-20 md:w-24 md:h-24 bg-slate-800/80 backdrop-blur-sm rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/10 ring-1 ring-white/5">
+                                <MessageSquare size={40} className="md:w-12 md:h-12" />
                             </div>
-                            <h2 className="text-3xl font-bold text-white mb-4 tracking-tight">Hello, I'm Walter!</h2>
-                            <p className="text-lg text-app-text-secondary max-w-lg leading-relaxed">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">Hello, I'm Walter!</h2>
+                            <p className="text-base md:text-lg text-app-text-secondary max-w-md md:max-w-lg leading-relaxed px-4">
                                 I'm here to match your pace. Ask me anything, and I'll do my best to help.
                             </p>
                         </div>
                     ) : (
-                        <div className="max-w-3xl mx-auto space-y-6 w-full">
+                        <div className="max-w-3xl mx-auto space-y-6 w-full p-4 md:p-8">
                             {messages.map((msg, idx) => (
                                 <div
                                     key={idx}
@@ -311,7 +311,7 @@ export default function ChatPage() {
                                     ${msg.role === 'user'
                                                 ? 'bg-blue-600 text-white rounded-3xl px-4 py-2.5 md:px-5 md:py-3 shadow-lg ml-auto max-w-[85%]'
                                                 : 'text-gray-100 pl-0'}
-                                `}
+                                    `}
                                     >
                                         {msg.role === 'assistant' ? (
                                             <div className="text-gray-100 [&>*:first-child]:mt-0">
