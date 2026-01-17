@@ -14,6 +14,7 @@ import {
     X
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import ProfileSidebar from './ProfileSidebar';
 
 interface Tuple {
     role: 'user' | 'assistant';
@@ -36,6 +37,7 @@ export default function ChatPage() {
     const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [isMobile, setIsMobile] = useState(false);
+    const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +50,17 @@ export default function ChatPage() {
             }
             setUser(user);
             fetchConversations(user.id);
+
+            // Fetch subscription status
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('subscription_status')
+                .eq('id', user.id)
+                .single();
+
+            if (profile) {
+                setSubscriptionStatus(profile.subscription_status);
+            }
         };
 
         checkUser();
@@ -180,6 +193,12 @@ export default function ChatPage() {
         }
     };
 
+    const [profileSidebarOpen, setProfileSidebarOpen] = useState(true);
+
+    // ... (existing effects)
+
+    const toggleProfileSidebar = () => setProfileSidebarOpen(!profileSidebarOpen);
+
     return (
         <div className="flex h-[100dvh] w-full fixed inset-0 overflow-hidden bg-app-gradient text-app-text-primary antialiased">
             {/* Mobile Overlay */}
@@ -187,7 +206,7 @@ export default function ChatPage() {
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" onClick={() => setSidebarOpen(false)} />
             )}
 
-            {/* Sidebar - Glass Effect */}
+            {/* Left Sidebar - History */}
             <aside
                 className={`
             fixed md:relative z-50 h-full w-[85vw] md:w-[280px] bg-slate-900/80 backdrop-blur-xl border-r border-white/5 flex flex-col transition-transform duration-300 ease-in-out
@@ -195,6 +214,7 @@ export default function ChatPage() {
             ${!sidebarOpen && !isMobile ? 'hidden' : 'flex'}
         `}
             >
+                {/* ... (Left sidebar content same as before, but remove Settings link) ... */}
                 <div className="p-4 md:p-5 border-b border-white/5 flex items-center justify-between">
                     <h1 className="text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2">
                         <span className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center text-sm shadow-glow">W</span>
@@ -235,30 +255,20 @@ export default function ChatPage() {
                     ))}
                 </div>
 
+                {/* Simplified User Info at bottom left */}
                 <div className="p-4 border-t border-white/5 bg-black/20">
-                    <div className="flex items-center gap-3 mb-4 p-2 rounded-xl bg-white/5 border border-white/5">
-                        <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white shrink-0">
-                            <User size={20} />
+                    <div className="flex items-center gap-3 p-2 rounded-xl bg-white/5 border border-white/5">
+                        <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white shrink-0">
+                            <User size={16} />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-white text-sm font-medium truncate">{user?.user_metadata?.name || 'User'}</p>
-                            <p className="text-xs text-app-text-muted truncate">{user?.email}</p>
+                            <p className="text-white text-xs font-medium truncate">{user?.user_metadata?.name || 'User'}</p>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                        <button
-                            onClick={() => router.push('/settings')}
-                            className="flex items-center justify-center gap-2 p-2 rounded-lg text-app-text-secondary hover:bg-white/10 hover:text-white transition-colors text-sm font-medium"
-                        >
-                            <Settings size={18} />
-                            Settings
-                        </button>
                         <button
                             onClick={handleLogout}
-                            className="flex items-center justify-center gap-2 p-2 rounded-lg text-app-text-secondary hover:bg-red-500/10 hover:text-red-400 transition-colors text-sm font-medium"
+                            className="text-gray-400 hover:text-white transition-colors"
                         >
-                            <LogOut size={18} />
-                            Logout
+                            <LogOut size={16} />
                         </button>
                     </div>
                 </div>
@@ -272,11 +282,13 @@ export default function ChatPage() {
                         <Menu size={24} />
                     </button>
                     <span className="font-bold text-lg text-white">Walter AI</span>
+                    <button onClick={() => setProfileSidebarOpen(true)} className="text-app-text-secondary hover:text-white ml-auto">
+                        <User size={24} />
+                    </button>
                 </header>
 
-                {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 md:p-8">
-                    <div className="max-w-2xl mx-auto space-y-6">
+                    <div className="max-w-3xl mx-auto space-y-6">
                         {messages.length === 0 ? (
                             <div className="flex flex-col items-center justify-center text-center p-8 opacity-0 animate-[fadeIn_0.8s_ease-out_forwards] mt-20">
                                 <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center text-app-accent-glow mb-6 shadow-2xl border border-white/5">
@@ -341,26 +353,36 @@ export default function ChatPage() {
                     </div>
                 </div>
 
-                {/* Input Area */}
                 <div className="absolute bottom-4 w-full z-20 p-2 bg-transparent">
                     <form onSubmit={sendMessage} className="w-[95%] md:w-full max-w-2xl mx-auto relative flex items-center">
                         <input
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="Type a message to Walter..."
-                            className="w-full bg-slate-800 text-white text-base pl-6 pr-14 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-2xl"
-                            disabled={loading}
+                            placeholder={
+                                (subscriptionStatus === 'active' || subscriptionStatus === 'trialing')
+                                    ? "Type a message to Walter..."
+                                    : "Please subscribe to chat..."
+                            }
+                            className="w-full bg-slate-800 text-white text-base pl-6 pr-14 py-4 rounded-full border border-white/10 focus:ring-2 focus:ring-app-accent focus:border-transparent outline-none placeholder:text-slate-500 transition-all shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={loading || !(subscriptionStatus === 'active' || subscriptionStatus === 'trialing')}
                         />
                         <button
                             type="submit"
-                            disabled={!input.trim() || loading}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:opacity-90 text-white p-3 rounded-full transition-all disabled:brightness-75 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
+                            disabled={!input.trim() || loading || !(subscriptionStatus === 'active' || subscriptionStatus === 'trialing')}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:opacity-90 text-white p-3 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-glow hover:scale-105 active:scale-95 shadow-lg"
                         >
                             <Send size={20} />
                         </button>
                     </form>
                 </div>
             </main>
+
+            {/* Right Sidebar - Profile */}
+            <ProfileSidebar
+                user={user}
+                isOpen={profileSidebarOpen}
+                onClose={() => setProfileSidebarOpen(false)}
+            />
         </div>
     );
 }
