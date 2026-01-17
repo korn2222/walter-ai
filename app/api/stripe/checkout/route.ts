@@ -68,7 +68,9 @@ export async function POST(req: Request) {
             mode: 'subscription',
             allow_promotion_codes: true,
             subscription_data: {
-                trial_period_days: isTrial ? 30 : undefined,
+                // If isTrial is true, set 30 days. 
+                // If false, set 0 to force immediate charge (overriding Price default).
+                trial_period_days: isTrial ? 30 : 0,
                 metadata: {
                     userId: user.id,
                 }
