@@ -43,7 +43,27 @@ export async function POST(req: Request) {
                 const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as unknown as Stripe.Subscription;
 
                 // Get userId from metadata OR client_reference_id (for Payment Links)
-                const userId = session.metadata?.userId || session.client_reference_id;
+                let userId = session.metadata?.userId || session.client_reference_id;
+
+                // Fallback: If no userId, try to find user by email
+                if (!userId && session.customer_details?.email) {
+                    const email = session.customer_details.email;
+                    // We need to query the `auth.users` table technically, but we can't do that easily via public client.
+                    // However, we have a public `profiles` table that triggers create on signup.
+                    // So we can look up the profile ID by email if the email is stored in profiles (it usually isn't by default).
+
+                    // Wait, we need to locate the user ID.
+                    // We can use the Admin API (Service Role) to list users by email.
+                    const { data: { users }, error } = await supabase.auth.admin.listUsers();
+                    const user = users?.find(u => u.email?.toLowerCase() === email.toLowerCase());
+
+                    if (user) {
+                        userId = user.id;
+                        console.log(`Found user ${userId} by email ${email}`);
+                    } else {
+                        console.error(`Could not find user by email: ${email}`);
+                    }
+                }
 
                 if (userId) {
                     await supabase.from('profiles').update({
@@ -53,6 +73,8 @@ export async function POST(req: Request) {
                         current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
                     }).eq('id', userId);
                     console.log(`Updated subscription for user ${userId}`);
+                } else {
+                    console.error('Webhook Error: Could not identify user for session', session.id);
                 }
                 break;
             }
