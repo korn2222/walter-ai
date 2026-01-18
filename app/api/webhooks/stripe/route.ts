@@ -40,7 +40,19 @@ export async function POST(req: Request) {
                 const session = event.data.object as Stripe.Checkout.Session;
                 // Retrieve the subscription details
                 // Cast to Stripe.Subscription to avoid "Response<Subscription>" TS issues
-                const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as unknown as Stripe.Subscription;
+                let subscription: Stripe.Subscription | null = null;
+                try {
+                    subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+                } catch (err) {
+                    console.error('Error retrieving subscription:', err);
+                }
+
+                let currentPeriodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // Default to 30 days
+                if (subscription && (subscription as any).current_period_end) {
+                    currentPeriodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+                } else {
+                    console.warn('Subscription or current_period_end missing, using default 30 days');
+                }
 
                 // Get userId from metadata OR client_reference_id (for Payment Links)
                 let userId = session.metadata?.userId || session.client_reference_id;
@@ -70,7 +82,7 @@ export async function POST(req: Request) {
                         stripe_customer_id: session.customer as string,
                         subscription_id: session.subscription as string,
                         subscription_status: 'active', // or 'trialing'
-                        current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
+                        current_period_end: currentPeriodEnd,
                     }).eq('id', userId);
                     console.log(`Updated subscription for user ${userId}`);
                 } else {
