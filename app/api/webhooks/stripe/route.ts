@@ -150,7 +150,7 @@ export async function POST(req: Request) {
                 if (subscriptionId) {
                     try {
                         const sub = await stripe.subscriptions.retrieve(subscriptionId);
-                        currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
+                        currentPeriodEnd = new Date((sub as any).current_period_end * 1000).toISOString();
                     } catch (e) { console.error('Error fetching sub in invoice hook', e) }
                 }
 
