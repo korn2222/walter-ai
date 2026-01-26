@@ -140,7 +140,7 @@ export async function POST(req: Request) {
                 break;
             }
             case 'invoice.payment_succeeded': {
-                const invoice = event.data.object as Stripe.Invoice;
+                const invoice = event.data.object as any;
                 const customerId = invoice.customer as string;
                 const subscriptionId = invoice.subscription as string;
                 const email = invoice.customer_email || invoice.customer_name; // Fallnames or other fields might be needed if email not directly on invoice object sometimes
