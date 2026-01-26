@@ -85,8 +85,28 @@ export async function POST(req: Request) {
                         current_period_end: currentPeriodEnd,
                     }).eq('id', userId);
                     console.log(`Updated subscription for user ${userId}`);
+                } else if (session.customer_details?.email) {
+                    // User doesn't exist yet, store in prepaid_subscriptions
+                    const email = session.customer_details.email;
+                    console.log(`User not found for email ${email}, storing as prepaid subscription`);
+
+                    const { error: prepaidError } = await supabase
+                        .from('prepaid_subscriptions')
+                        .upsert({
+                            email: email,
+                            stripe_customer_id: session.customer as string,
+                            subscription_id: session.subscription as string,
+                            subscription_status: 'active',
+                            current_period_end: currentPeriodEnd,
+                        }, { onConflict: 'email' });
+
+                    if (prepaidError) {
+                        console.error('Error storing prepaid subscription:', prepaidError);
+                    } else {
+                        console.log(`Stored prepaid subscription for ${email}`);
+                    }
                 } else {
-                    console.error('Webhook Error: Could not identify user for session', session.id);
+                    console.error('Webhook Error: Could not identify user or email for session', session.id);
                 }
                 break;
             }
@@ -117,6 +137,61 @@ export async function POST(req: Request) {
                     current_period_end: new Date().toISOString(), // Revoke access now?
                 }).eq('stripe_customer_id', subscription.customer as string);
                 console.log(`Subscription deleted for customer ${subscription.customer}`);
+                break;
+            }
+            case 'invoice.payment_succeeded': {
+                const invoice = event.data.object as Stripe.Invoice;
+                const customerId = invoice.customer as string;
+                const subscriptionId = invoice.subscription as string;
+                const email = invoice.customer_email || invoice.customer_name; // Fallnames or other fields might be needed if email not directly on invoice object sometimes
+
+                // Retrieve subscription to get end date if not in invoice
+                let currentPeriodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+                if (subscriptionId) {
+                    try {
+                        const sub = await stripe.subscriptions.retrieve(subscriptionId);
+                        currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
+                    } catch (e) { console.error('Error fetching sub in invoice hook', e) }
+                }
+
+                // Try to find user by customer_id first (existing link)
+                const { data: profiles } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .eq('stripe_customer_id', customerId);
+
+                if (profiles && profiles.length > 0) {
+                    await supabase.from('profiles').update({
+                        subscription_status: 'active',
+                        current_period_end: currentPeriodEnd,
+                        subscription_id: subscriptionId
+                    }).eq('stripe_customer_id', customerId);
+                    console.log(`Updated subscription via invoice for customer ${customerId}`);
+                } else if (invoice.customer_email) {
+                    // Try to find user by email
+                    const { data: { users }, error } = await supabase.auth.admin.listUsers();
+                    const user = users?.find(u => u.email?.toLowerCase() === invoice.customer_email?.toLowerCase());
+
+                    if (user) {
+                        await supabase.from('profiles').update({
+                            stripe_customer_id: customerId,
+                            subscription_id: subscriptionId,
+                            subscription_status: 'active',
+                            current_period_end: currentPeriodEnd,
+                        }).eq('id', user.id);
+                        console.log(`Linked customer ${customerId} to user ${user.id} via invoice email`);
+                    } else {
+                        // PREPAID SUBSCRIPTION LOGIC (For Manual Dashboard Creation)
+                        console.log(`User not found for invoice email ${invoice.customer_email}, storing as prepaid`);
+                        await supabase.from('prepaid_subscriptions').upsert({
+                            email: invoice.customer_email,
+                            stripe_customer_id: customerId,
+                            subscription_id: subscriptionId,
+                            subscription_status: 'active',
+                            current_period_end: currentPeriodEnd,
+                        }, { onConflict: 'email' });
+                    }
+                }
                 break;
             }
             case 'invoice.payment_failed': {
