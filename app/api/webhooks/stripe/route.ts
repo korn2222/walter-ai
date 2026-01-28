@@ -140,6 +140,7 @@ export async function POST(req: Request) {
                 break;
             }
             case 'invoice.payment_succeeded': {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const invoice = event.data.object as any;
                 const customerId = invoice.customer as string;
                 const subscriptionId = invoice.subscription as string;
@@ -150,6 +151,7 @@ export async function POST(req: Request) {
                 if (subscriptionId) {
                     try {
                         const sub = await stripe.subscriptions.retrieve(subscriptionId);
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         currentPeriodEnd = new Date((sub as any).current_period_end * 1000).toISOString();
                     } catch (e) { console.error('Error fetching sub in invoice hook', e) }
                 }
